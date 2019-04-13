@@ -19,6 +19,7 @@ public class PuSelector {
     Properties props = new Properties();
     String propertyFileName = propertyFile+FILE_EXTENSION;
     try {
+     // System.out.println("File: +PuSelector.class.getResource("/META-INF"+propertyFileName));
       props.load(PuSelector.class.getResourceAsStream("/META-INF/"+propertyFileName));
     } catch (Exception ex) {
       throw new RuntimeException("Could not load properies for :"+propertyFileName);
@@ -46,6 +47,11 @@ public class PuSelector {
     //System.out.println("Persistence Unit Name: "+PU_NAME);
     
     Properties props = loadProperties(PU_NAME);
+    if(props != null){
+      System.out.println("Props ---> "+ props.size());
+    } else{
+      System.out.println("Props could not be read");
+    }
 
    /*    
     boolean isDeployed = (System.getenv("PRODUCTION") != null && System.getenv("PRODUCTION").equals("DIGITALOCEAN"));
