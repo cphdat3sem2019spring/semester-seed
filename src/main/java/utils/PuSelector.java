@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 
 // Returns an EntityManagerFactory using the provided PU_NAME)
 public class PuSelector {
@@ -47,6 +48,8 @@ public class PuSelector {
     //System.out.println("Persistence Unit Name: "+PU_NAME);
     
     Properties props = loadProperties(PU_NAME);
+    //Only reason to give persistence file another name is that it must NOT be git-ignored, which i what we usually do with persistence.xml
+    props.setProperty(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML, "META-INF/persistence-for-all.xml");
     if(props != null){
       System.out.println("Props ---> "+ props.size());
     } else{
