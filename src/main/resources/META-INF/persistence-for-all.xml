@@ -7,7 +7,8 @@
     <class>entity.Role</class>
     <class>entity.User</class>
     <properties>
-      <!-- Dont add anything in here. This part will come from one of the pu_xxxx.properties files -->
+      <!-- DONT ADD ANYTHING HERE
+      This part will come from one of the pu_xxxx.properties files -->
     </properties>
   </persistence-unit>
 </persistence>

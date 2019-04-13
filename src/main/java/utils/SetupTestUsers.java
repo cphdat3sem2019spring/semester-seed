@@ -2,9 +2,7 @@ package utils;
 
 import entity.Role;
 import entity.User;
-import java.util.Properties;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 
 public class SetupTestUsers {
 

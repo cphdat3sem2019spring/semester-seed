@@ -6,53 +6,69 @@ import javax.persistence.Persistence;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 
 // Returns an EntityManagerFactory using the provided PU_NAME)
+// DO NOT CHANGE THIS FILE, UNLESS YOU REALLY KNOW WHAT YOU DO
 public class PuSelector {
 
   private static String PU_NAME;
   private static EntityManagerFactory emf;
   public static final String FILE_EXTENSION = ".properties";
-   
- 
+
   public static Properties loadProperties(String propertyFile) {
     Properties props = new Properties();
-    String propertyFileName = propertyFile+FILE_EXTENSION;
+    String propertyFileName = propertyFile + FILE_EXTENSION;
     try {
-      props.load(PuSelector.class.getResourceAsStream("/META-INF/"+propertyFileName));
+      props.load(PuSelector.class.getResourceAsStream("/META-INF/" + propertyFileName));
     } catch (Exception ex) {
-      throw new RuntimeException("Could not load properies for :"+propertyFileName);
+      throw new RuntimeException("Could not load properies for :" + propertyFileName);
     }
     return props;
   }
-  
-  public static EntityManagerFactory getEntityManagerFactory(String persistenceUnitName){
+
+  public static EntityManagerFactory getEntityManagerFactory(String persistenceUnitName) {
 
     //This ensures that only ONE factory will ever be used. If a test has set to a test db, this will be used also forexample from the login end-point
     if (emf != null) {
-     // System.out.println("--- Returned am EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
+      // System.out.println("--- Returned am EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
       return emf;
     }
-    
+
     PU_NAME = persistenceUnitName;
-        
+
     //You can override the given PU_NAME from maven like this for integration tests: mvn -DPU_NAME=pu-test-on-travis verify
     String puVal = System.getProperty("PU_NAME");
     if (puVal != null) {
       PU_NAME = puVal;
-    }   
+    }
 
-    //System.out.println("Persistence Unit Name: "+PU_NAME);
+    Properties props = null;
+    /*
+      If you set the following environment Variable on your production server, the production persistence unit will use them.
+      export SERVER="PRODUCTION"
+      export USER="YOUR_DATABASE_USER"
+      export PASSWORD="YOUR PASSWORD FOR THE PRODUCTION DB"
     
-    Properties props = loadProperties(PU_NAME);
+      MUST BE SET in this file (if file don't exist, create it):  /usr/share/tomcat8/bin/setenv.share/tomcat8/bin/setenv
+     */
+
+    boolean isDeployed = (System.getenv("SERVER") != null && System.getenv("SERVER").equals("PRODUCTION"));
+    if (isDeployed) {
+      PU_NAME = "pu_production";
+      props = loadProperties(PU_NAME);
+      String user =   System.getenv("USER") != null ? System.getenv("USER") : "";
+      String password =   System.getenv("PASSWORD") != null ? System.getenv("PASSWORD") : "";
+      props.setProperty("user", user);
+      props.setProperty("password", password);
+    }
+    
+    //If NOT deployed
+    if (props == null) {
+      props = loadProperties(PU_NAME);
+    }
+
+    
     //Only reason to give persistence file another name is that it must NOT be git-ignored, which i what we usually do with persistence.xml
     props.setProperty(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML, "META-INF/persistence-for-all.xml");
-    
-    
-   /*    
-    boolean isDeployed = (System.getenv("PRODUCTION") != null && System.getenv("PRODUCTION").equals("DIGITALOCEAN"));
-    //https://stackoverflow.com/questions/18583881/changing-persistence-unit-dynamically-jpa
-    
-     */
-    
+
     emf = Persistence.createEntityManagerFactory("DO_NOT_RENAME_ME", props);
 
     return emf;
