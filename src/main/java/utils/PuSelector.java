@@ -15,18 +15,18 @@ public class PuSelector {
   public static final String FILE_EXTENSION = ".properties";
    
  
-  public static Properties loadProperties(String propertyFile){
+  public static Properties loadProperties(String propertyFile) {
     Properties props = new Properties();
+    String propertyFileName = propertyFile+FILE_EXTENSION;
     try {
-      String propertyFileName = propertyFile+FILE_EXTENSION;
       props.load(PuSelector.class.getResourceAsStream("/META-INF/"+propertyFileName));
-    } catch (IOException ex) {
-      Logger.getLogger(PuSelector.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (Exception ex) {
+      throw new RuntimeException("Could not load properies for :"+propertyFileName);
     }
     return props;
   }
   
-  public static EntityManagerFactory getEntityManagerFactory(String persistenceUnitName) {
+  public static EntityManagerFactory getEntityManagerFactory(String persistenceUnitName){
 
     //This ensures that only ONE factory will ever be used. If a test has set to a test db, this will be used also forexample from the login end-point
     if (emf != null) {
