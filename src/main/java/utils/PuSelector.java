@@ -30,11 +30,12 @@ public class PuSelector {
 
     //This ensures that only ONE factory will ever be used. If a test has set to a test db, this will be used also forexample from the login end-point
     if (emf != null) {
-      //System.out.println("--- Returned am EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
+      System.out.println("--- Returned am EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
       return emf;
     }
     
     PU_NAME = persistenceUnitName;
+    System.out.println("PU_NAME ---> "+PU_NAME);
     
     //You can override the given PU_NAME from maven like this: mvn -DPU_NAME=pu-test-on-travis verify
     String puVal = System.getProperty("PU_NAME_TEST");
