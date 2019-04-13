@@ -47,7 +47,7 @@ public class PuSelector {
       export USER="YOUR_DATABASE_USER"
       export PASSWORD="YOUR PASSWORD FOR THE PRODUCTION DB"
     
-      MUST BE SET in this file (if file don't exist, create it):  /usr/share/tomcat8/bin/setenv.share/tomcat8/bin/setenv
+      MUST BE SET in this file on Digital Ocean (if file don't exist, create it):  /usr/share/tomcat8/bin/setenv.share/tomcat8/bin/setenv
      */
 
     boolean isDeployed = (System.getenv("SERVER") != null && System.getenv("SERVER").equals("PRODUCTION"));
