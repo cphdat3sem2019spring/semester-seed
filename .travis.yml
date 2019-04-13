@@ -7,6 +7,8 @@ cache:
 
 script:
   - mvn -DPU_NAME=pu_travis_integration_test verify
+  - mvn -DPU_NAME=pu_travis_integration_test verify
+  - mvn -DPU_NAME=pu_travis_integration_test verify
 
 services:
    - mysql
