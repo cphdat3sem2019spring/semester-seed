@@ -38,7 +38,7 @@ public class PuSelector {
     System.out.println("PU_NAME ---> "+PU_NAME);
     
     //You can override the given PU_NAME from maven like this: mvn -DPU_NAME=pu-test-on-travis verify
-    String puVal = System.getProperty("PU_NAME_TEST");
+    String puVal = System.getProperty("PU_NAME");
     if (puVal != null) {
       PU_NAME = puVal;
     }   
