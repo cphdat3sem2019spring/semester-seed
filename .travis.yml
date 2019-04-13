@@ -7,8 +7,8 @@ cache:
 
 script:
   - mvn -DPU_NAME=pu_travis_integration_test verify
-  - mvn -DPU_NAME=pu_travis_integration_test verify
-  - mvn -DPU_NAME=pu_travis_integration_test verify
+  # Deploy to Test Server
+  # Add a (Accept) test that tests up against the Deployed Server
 
 services:
    - mysql
