@@ -3,17 +3,19 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>dk.cphbusiness</groupId>
-  <artifactId>jwtBackend</artifactId>
+  <artifactId>jwtbackend</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>jwtBackend</name>
+  <name>jwtbackend</name>
 
   <properties>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
-    <remote.server>https://deploy.mydemos.dk/manager/text</remote.server>
+    <remote.server>https://www.sem3.mydemos.dk/manager/text</remote.server>
+<!--    <remote.username>admin</remote.username>-->
+<!--    <remote.password>dat2800dat</remote.password>-->
     <remote.path>restdemo</remote.path>
     
     <!--<tomcat.version>7.0.93</tomcat.version>-->
@@ -230,11 +232,18 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
         <configuration>
+          <!--<url>https://www.sem3.mydemos.dk/manager/text</url>-->
+<!--          <path>${remote.path}</path>-->
+          <server>TomcatServer</server>
+          <!--<username>admin</username>-->
+          <password>dat2800dat</password>
           <url>${remote.server}</url>
-          <path>${remote.path}</path>
+          <username>${remote.user}</username>
+          <password>${remote.password}</password>
+        <!--  <path>${remote.path}</path>
           <server>TomcatServer</server>
           <username>${env.TOMCAT_USER} </username>
-          <password>${env.TOMCAT_PASSWORD}</password>
+          <password>${env.TOMCAT_PASSWORD}</password>-->
           <update>true</update>    
         </configuration>
        

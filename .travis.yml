@@ -7,9 +7,10 @@ cache:
 
 script:
   - mvn -DPU_NAME=pu_travis_integration_test verify
+  - mvn -Dremote.user=admin -Dremote.password=dat2800dat tomcat7:deploy
   # Assume we did a Deploy to Test Server here
   # Next line simulates an acceptance test up against the deployed project
-  - mvn verify -PA_T  
+  # - mvn verify -PA_T  
 
 services:
    - mysql

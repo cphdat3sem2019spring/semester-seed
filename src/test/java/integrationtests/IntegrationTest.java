@@ -17,25 +17,29 @@ import utils.PuSelector;
 
 public class IntegrationTest {
 
-  private static final int SERVER_PORT = 7777;
-  private static final String APP_CONTEXT = "/jwtbackend";
-
+  protected static int SERVER_PORT;
+  protected static  String APP_CONTEXT;
+  protected static String SERVER_URL;
+  
   public IntegrationTest() {
   }
   
-  
   private static EmbeddedTomcat tomcat;
+ 
   @BeforeClass
   public static void setUpBeforeAll() throws ServletException, MalformedURLException, LifecycleException {
-    //Setup the database for testing
+    System.out.println("INTEGRATION TEST");
     TestUtils.setupTestUsers(PuSelector.getEntityManagerFactory("pu_local_integration_test"));
+    SERVER_PORT = 7777;
+    APP_CONTEXT = "/jwtbackend";
+    SERVER_URL = "http://localhost";
     
     //Setup and start Embedded Tomcat for testing
     tomcat = new EmbeddedTomcat();
     tomcat.start(SERVER_PORT, APP_CONTEXT);
     
     //Setup RestAssured
-    RestAssured.baseURI = "http://localhost";
+    RestAssured.baseURI = SERVER_URL;
     RestAssured.port = SERVER_PORT;
     RestAssured.basePath = APP_CONTEXT;
     RestAssured.defaultParser = Parser.JSON;
@@ -52,7 +56,7 @@ public class IntegrationTest {
   @Test
   public void serverIsRunning() {
     System.out.println("Testing is server UP");
-    given().when().get().then().statusCode(200);
+    given().when().get("/").then().statusCode(200);
   }
 
   //Utility method to login and set the securityToken
@@ -77,7 +81,7 @@ public class IntegrationTest {
             .when()
             .get("/api/info").then()
             .statusCode(200)
-            .body("msg", equalTo("Hello anonymous"));
+            .body("msg", equalTo("Hello anonymous"));            
   }
 
   @Test

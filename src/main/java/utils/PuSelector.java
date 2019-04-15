@@ -28,7 +28,7 @@ public class PuSelector {
 
     //This ensures that only ONE factory will ever be used. If a test has set to a test db, this will be used also forexample from the login end-point
     if (emf != null) {
-      // System.out.println("--- Returned am EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
+       System.out.println("--- Returned am EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
       return emf;
     }
 
@@ -47,17 +47,24 @@ public class PuSelector {
       export USER="YOUR_DATABASE_USER"
       export PASSWORD="YOUR PASSWORD FOR THE PRODUCTION DB"
     
-      MUST BE SET in this file on Digital Ocean (if file don't exist, create it):  /usr/share/tomcat8/bin/setenv.share/tomcat8/bin/setenv
+      MUST BE SET in this file on Digital Ocean (if file don't exist, create it):  /usr/share/tomcat8/bin/setenv.sh
      */
-
-    boolean isDeployed = (System.getenv("SERVER") != null && System.getenv("SERVER").equals("PRODUCTION"));
+    System.out.println("######## Testing for deployment ##############");
+    boolean isDeployed = (System.getenv("SERVER") != null);
     if (isDeployed) {
-      PU_NAME = "pu_production";
+      if(System.getenv("SERVER").equals("PRODUCTION")){
+         PU_NAME = "pu_production";
+      } else if (System.getenv("SERVER").equals("TEST")){
+        PU_NAME = "pu_accepttest";
+      }
+      //TODO REMOVE THIS
+      PU_NAME = "pu_accepttest";
       props = loadProperties(PU_NAME);
-      String user =   System.getenv("USER") != null ? System.getenv("USER") : "";
-      String password =   System.getenv("PASSWORD") != null ? System.getenv("PASSWORD") : "";
-      props.setProperty("user", user);
-      props.setProperty("password", password);
+//      String user =   System.getenv("USER") != null ? System.getenv("USER") : "";
+//      String password =   System.getenv("PASSWORD") != null ? System.getenv("PASSWORD") : "";
+//      props.setProperty("user", user);
+//      props.setProperty("password", password);
+      //System.out.println("DEPLOYED ---> "+user+", "+password);
     }
     
     //If NOT deployed
@@ -68,6 +75,11 @@ public class PuSelector {
     
     //Only reason to give persistence file another name is that it must NOT be git-ignored, which i what we usually do with persistence.xml
     props.setProperty(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML, "META-INF/persistence-for-all.xml");
+    
+    for(Object p: props.keySet()){
+      String key = (String) p;
+      System.out.println( key +" : " +props.getProperty(key));
+    }
 
     emf = Persistence.createEntityManagerFactory("DO_NOT_RENAME_ME", props);
 
