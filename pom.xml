@@ -38,12 +38,6 @@
       <artifactId>eclipselink</artifactId>
       <version>2.5.2</version>
     </dependency>
-    <!--    <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
-      <version>2.5.2</version>
-      <scope>provided</scope>
-    </dependency>-->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -338,7 +332,7 @@
   <!-- Build with -P<profileName> to activate the profiles-->
   <profiles>
     <profile>
-      <id>A_T</id>
+      <id>ACCEPT_TEST</id>
       <build>
         <plugins>
           
