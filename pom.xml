@@ -14,16 +14,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <remote.server>https://www.sem3.mydemos.dk/manager/text</remote.server>
-<!--    <remote.username>admin</remote.username>-->
-<!--    <remote.password>dat2800dat</remote.password>-->
     <remote.path>restdemo</remote.path>
     
     <!--<tomcat.version>7.0.93</tomcat.version>-->
     <tomcat.version>8.0.39</tomcat.version>
-    <!--
-    Upgrade to latest 7.0.x  (7.0.93) version is required to fix the problem outlined below for the tomcat7-maven-plugin
-    org.apache.tomcat.util.bcel.classfile.ClassFormatException: Invalid byte tag in constant pool: 19
-    -->
   </properties>
     
   <dependencies>
@@ -232,18 +226,13 @@
         <artifactId>tomcat7-maven-plugin</artifactId>
         <version>2.2</version>
         <configuration>
-          <!--<url>https://www.sem3.mydemos.dk/manager/text</url>-->
-<!--          <path>${remote.path}</path>-->
           <server>TomcatServer</server>
-          <!--<username>admin</username>-->
           <password>dat2800dat</password>
           <url>${remote.server}</url>
           <username>${remote.user}</username>
           <password>${remote.password}</password>
-        <!--  <path>${remote.path}</path>
-          <server>TomcatServer</server>
-          <username>${env.TOMCAT_USER} </username>
-          <password>${env.TOMCAT_PASSWORD}</password>-->
+          <!-- <username>${env.TOMCAT_USER} </username>-->
+          <!--  <password>${env.TOMCAT_PASSWORD}</password>-->
           <update>true</update>    
         </configuration>
        

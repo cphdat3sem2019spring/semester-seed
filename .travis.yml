@@ -10,7 +10,7 @@ script:
   - mvn -Dremote.user=$REMOTE_USER -Dremote.password=$REMOTE_PW tomcat7:deploy
   # Assume we did a Deploy to Test Server here
   # Next line runs an acceptance test up against the deployed project
-  - mvn verify -PA_T  
+  - mvn verify -PACCEPT_TEST 
 
 services:
    - mysql

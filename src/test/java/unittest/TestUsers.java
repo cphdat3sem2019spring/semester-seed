@@ -20,7 +20,7 @@ public class TestUsers {
   
   @BeforeClass
   public static void setUpClass() {
-    EntityManagerFactory emf = PuSelector.getEntityManagerFactory("pu_local_unit_test");
+    EntityManagerFactory emf = PuSelector.getEntityManagerFactory("pu_unit_test_mock");
     facade = UserFacade.getInstance(emf);
     TestUtils.setupTestUsers(emf);
   }

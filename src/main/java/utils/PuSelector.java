@@ -18,6 +18,9 @@ public class PuSelector {
     String propertyFileName = propertyFile + FILE_EXTENSION;
     try {
       props.load(PuSelector.class.getResourceAsStream("/META-INF/" + propertyFileName));
+      for (Object key : props.keySet()) {
+        props.setProperty((String) key, props.getProperty((String) key).trim());
+      }
     } catch (Exception ex) {
       throw new RuntimeException("Could not load properies for :" + propertyFileName);
     }
@@ -26,9 +29,9 @@ public class PuSelector {
 
   public static EntityManagerFactory getEntityManagerFactory(String persistenceUnitName) {
 
-    //This ensures that only ONE factory will ever be used. If a test has set to a test db, this will be used also forexample from the login end-point
+    //This ensures that only ONE factory will ever be used. If a test has set to a test-db, this will be used also for example from the login end-point
     if (emf != null) {
-       System.out.println("--- Returned am EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
+      System.out.println("Returned an EntityManagerFactory for  --> " + emf.getProperties().get("javax.persistence.jdbc.url"));
       return emf;
     }
 
@@ -42,47 +45,35 @@ public class PuSelector {
 
     Properties props = null;
     /*
-      If you set the following environment Variable on your production server, the production persistence unit will use them.
+      If you set the following environment variables on your production server, the production persistence unit will use them.
       export SERVER="PRODUCTION"
       export USER="YOUR_DATABASE_USER"
       export PASSWORD="YOUR PASSWORD FOR THE PRODUCTION DB"
     
       MUST BE SET in this file on Digital Ocean (if file don't exist, create it):  /usr/share/tomcat8/bin/setenv.sh
      */
-    System.out.println("######## Testing for deployment ##############");
+
     boolean isDeployed = (System.getenv("SERVER") != null);
     if (isDeployed) {
-      if(System.getenv("SERVER").equals("PRODUCTION")){
-         PU_NAME = "pu_production";
-      } else if (System.getenv("SERVER").equals("TEST")){
-        PU_NAME = "pu_accepttest";
+      if (System.getenv("SERVER").equals("PRODUCTION")) {  //You could also setup a Test server where you set SERVER="TEST"
+        PU_NAME = "pu_production";
+        props = loadProperties(PU_NAME);
+        String user = System.getenv("USER") != null ? System.getenv("USER") : "";
+        String password = System.getenv("PASSWORD") != null ? System.getenv("PASSWORD") : "";
+        props.setProperty("user", user);
+        props.setProperty("password", password);
       }
-      //TODO REMOVE THIS
-      PU_NAME = "pu_accepttest";
-      props = loadProperties(PU_NAME);
-//      String user =   System.getenv("USER") != null ? System.getenv("USER") : "";
-//      String password =   System.getenv("PASSWORD") != null ? System.getenv("PASSWORD") : "";
-//      props.setProperty("user", user);
-//      props.setProperty("password", password);
-      //System.out.println("DEPLOYED ---> "+user+", "+password);
     }
-    
-    //If NOT deployed
+     //If NOT deployed
     if (props == null) {
       props = loadProperties(PU_NAME);
     }
 
-    
-    //Only reason to give persistence file another name is that it must NOT be git-ignored, which i what we usually do with persistence.xml
-    props.setProperty(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML, "META-INF/persistence-for-all.xml");
-    
-    for(Object p: props.keySet()){
-      String key = (String) p;
-      System.out.println( key +" : " +props.getProperty(key));
-    }
+    //Only reason to give persistence file another name is that it must NOT be git-ignored, which is what we usually do with persistence.xml
+    props.setProperty(PersistenceUnitProperties.ECLIPSELINK_PERSISTENCE_XML,
+            "META-INF/persistence-for-all.xml");
 
     emf = Persistence.createEntityManagerFactory("DO_NOT_RENAME_ME", props);
-
     return emf;
   }
 }
