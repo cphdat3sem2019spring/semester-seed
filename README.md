@@ -1,3 +1,3 @@
 # jwtBackend
 
-Start code for exercise given at cphbusiness.dk - computer science
+Start code for exercises, CA-3 and the Semester Project given at cphbusiness.dk - computer science
