@@ -6,7 +6,6 @@
     <!-- This is the template usd for all databases (persistence units) used by this project -->
     
     <!-- Remember to add your Entity Classes below -->
-    <class>entity.Car</class>
     <class>entity.Role</class>
     <class>entity.User</class>
     <properties>

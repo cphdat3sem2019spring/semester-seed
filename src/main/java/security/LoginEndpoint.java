@@ -31,7 +31,7 @@ import utils.PuSelector;
 public class LoginEndpoint {
 
   public static final int TOKEN_EXPIRE_TIME = 1000 * 60 * 30; //30 min
-  public static final UserFacade userFacade = UserFacade.getInstance(PuSelector.getEntityManagerFactory("pu"));
+  public static final UserFacade userFacade = UserFacade.getInstance(PuSelector.getEntityManagerFactory("pu_local_dev"));
   
   @POST
   @Consumes(MediaType.APPLICATION_JSON)

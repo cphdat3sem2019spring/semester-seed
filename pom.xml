@@ -14,8 +14,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <remote.server>https://www.sem3.mydemos.dk/manager/text</remote.server>
-    <remote.path>restdemo</remote.path>
-    
+        
     <!--<tomcat.version>7.0.93</tomcat.version>-->
     <tomcat.version>8.0.39</tomcat.version>
   </properties>
@@ -41,7 +40,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <!--      <version>8.0.15</version>-->
+<!--      <version>8.0.15</version>-->
       <version>5.1.39</version>
     </dependency>
     <dependency>
@@ -221,7 +220,6 @@
         <version>2.2</version>
         <configuration>
           <server>TomcatServer</server>
-          <password>dat2800dat</password>
           <url>${remote.server}</url>
           <username>${remote.user}</username>
           <password>${remote.password}</password>

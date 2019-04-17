@@ -52,16 +52,18 @@ public class PuSelector {
     
       MUST BE SET in this file on Digital Ocean (if file don't exist, create it):  /usr/share/tomcat8/bin/setenv.sh
      */
-
+    
+    System.out.println("SERVER -->"+System.getenv("SERVER"));
     boolean isDeployed = (System.getenv("SERVER") != null);
     if (isDeployed) {
       if (System.getenv("SERVER").equals("PRODUCTION")) {  //You could also setup a Test server where you set SERVER="TEST"
         PU_NAME = "pu_production";
+        System.out.println("PU_NAME: "+PU_NAME);
         props = loadProperties(PU_NAME);
         String user = System.getenv("USER") != null ? System.getenv("USER") : "";
         String password = System.getenv("PASSWORD") != null ? System.getenv("PASSWORD") : "";
-        props.setProperty("user", user);
-        props.setProperty("password", password);
+        props.setProperty("javax.persistence.jdbc.user", user);
+        props.setProperty("javax.persistence.jdbc.password", password);
       }
     }
      //If NOT deployed

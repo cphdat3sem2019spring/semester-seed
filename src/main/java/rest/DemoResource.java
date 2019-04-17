@@ -32,14 +32,15 @@ public class DemoResource {
     return "{\"msg\":\"Hello anonymous\"}";
   }
 
+  //Just to verify if the database is setup
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path("all")
   public String allUsers() {
-    EntityManager em = PuSelector.getEntityManagerFactory("pu_local_dev").createEntityManager();
+    EntityManager em = PuSelector.getEntityManagerFactory("pu").createEntityManager();
     try{
       List<User> users = em.createQuery("select user from User user").getResultList();
-      return "[1111,"+users.size()+"]";
+      return "["+users.size()+"]";
     } finally {
       em.close();
     }
