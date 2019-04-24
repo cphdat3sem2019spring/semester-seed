@@ -108,6 +108,31 @@ public class IntegrationTest {
             .statusCode(200)
             .body("msg", equalTo("Hello to User: user"));
   }
+  
+  @Test
+  public void testRestForMultiRole1() {
+    login("user_admin", "test");
+    given()
+            .contentType("application/json")
+            .accept(ContentType.JSON)
+            .header("x-access-token", securityToken)
+            .when()
+            .get("/api/info/admin").then()
+            .statusCode(200)
+            .body("msg", equalTo("Hello to (admin) User: user_admin"));
+  }
+
+  @Test
+  public void testRestForMultiRole2() {
+    login("user_admin", "test");
+    given()
+            .contentType("application/json")
+            .header("x-access-token", securityToken)
+            .when()
+            .get("/api/info/user").then()
+            .statusCode(200)
+            .body("msg", equalTo("Hello to User: user_admin"));
+  }
 
   @Test
   public void userNotAuthenticated() {
